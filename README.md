@@ -2,9 +2,11 @@
 A simple Stroop Task programmed using PsychoPy
 
 ## Instructions
-    [x] Swedish
-    [] English
+    * [x] Swedish
+    * [] English
     
 ## Stimuli
-    [X] English
-    [X] Swedish (translated in the script)
+    * [X] English
+    * [X] Swedish (translated in the script)
+
+Feel free to contribute with other languages.
