@@ -1,0 +1,7 @@
+stimulus,colour,alt1,alt2,correctresponse
+green,blue,blue,green,x
+red,green,red,green,m
+blue,yellow,yellow,blue,x
+yellow,red,red,yellow,x
+red,blue,red,blue,m
+blue,green,blue,green,m

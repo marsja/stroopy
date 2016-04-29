@@ -1,0 +1,7 @@
+Din uppgift är att så korrekt och snabbt som möjligt avgöra vilken färg ett ord är skrivet med. 
+Du får två alternativ, ett på vardera  sida om det färgade ordet.
+Använd X-tangent för vänster, och M-tangent för höger. 
+
+
+
+I exemplet nedan skulle du alltså tryckt på X (vänster), eftersom färgen på mittenordet är grön.
