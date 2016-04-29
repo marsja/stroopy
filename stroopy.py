@@ -30,7 +30,7 @@ class Experiment:
             core.quit()
             return 'Cancelled'
 
-    def create_text_stimuli(self, text='', pos=[0.0, 0.0], name='', color='Black'):
+    def create_text_stimuli(self, text=None, pos=[0.0, 0.0], name='', color='Black'):
         '''Creates a text stimulus,
         self.text = text
         self.pos = pos
@@ -174,16 +174,16 @@ def display_instructions(start_instruction=True):
         instructions['instructions_SWE'].draw()
 
         positions = [[-.2, 0], [.2, 0], [0, 0]]
-        examples = experiment.create_text_stimuli(window, text=u'Grön')
+        examples = [experiment.create_text_stimuli(window) for pos in positions]
         for i, pos in enumerate(positions):
-            examples.pos = pos
+            examples[i].pos = pos
             if i == 0:
-                examples.setText(u'Grön')
+                examples[0].setText(u'Grön')
             else:
-                examples.setText(u'Blå')
+                examples[1].setText(u'Blå')
             if i == 2:
-                examples.setColor('Green')
-            examples.draw()
+                examples[2].setColor('Green')
+        [example.draw() for example in examples]
 
         instructions['instructions2_SWE'].pos = (0.0, -0.5)
         instructions['instructions2_SWE'].draw()
