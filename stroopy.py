@@ -15,7 +15,7 @@ class Experiment:
         # type: (object, object) -> object
         self.color = color
         self.win = visual.Window(monitor="testMonitor",
-                                 color=self.color, fullscr=False)
+                                 color=self.color, fullscr=True)
         return self.win
 
     def settings(self):
@@ -53,7 +53,7 @@ class Experiment:
         self.trial_file = trial_file
         self.random = randomization
         self.data_types = ['Response', 'Accuracy', 'RT', 'Sub_id', 'Sex']
-        with open(self.trial_file, 'rtU') as stimfile:
+        with open(self.trial_file, 'r') as stimfile:
             self._stims = csv.DictReader(stimfile)
             self.trials = data.TrialHandler(list(self._stims), 1,
                                             method="random")
@@ -145,7 +145,7 @@ def loadFiles(directory, exts, fileType, win='', whichFiles='*', stimList=[]):
         stimFile = os.path.splitext(fullFileName)[0]
 
         if fileType == 'text':
-            with codecs.open(fullPath, 'rtU', encoding='latin-1') as f:
+            with codecs.open(fullPath, 'r', encoding='latin-1') as f:
                 textRef = visual.TextStim(win, text=f.read(), wrapWidth=1.2, alignHoriz='center', color="Black",
                                           alignVert='center', height=0.06)
 
@@ -173,7 +173,7 @@ def display_instructions(start_instruction=True):
         instructions['instructions_SWE'].draw()
 
         positions = [[-.2, 0], [.2, 0], [0, 0]]
-        examples = [experiment.create_text_stimuli(window) for pos in positions]
+        examples = [experiment.create_text_stimuli() for pos in positions]
         for i, pos in enumerate(positions):
             examples[i].pos = pos
             if i == 0:
