@@ -67,7 +67,6 @@ class Experiment:
         self.color = color
         self.position = position
         if self.experiment_info['Language'] == "Swedish":
-            print "Swedish version"
             self.text = swedish_task(text)
         else:
             self.text = text
@@ -178,9 +177,9 @@ def display_instructions(start_instruction=True):
         for i, pos in enumerate(positions):
             examples[i].pos = pos
             if i == 0:
-                examples[0].setText(u'Grön')
+                examples[0].setText(u'grön')
             else:
-                examples[1].setText(u'Blå')
+                examples[1].setText(u'blå')
             if i == 2:
                 examples[2].setColor('Green')
         [example.draw() for example in examples]
@@ -198,7 +197,7 @@ def display_instructions(start_instruction=True):
 def swedish_task(word):
     swedish = '+'
     if word == "blue":
-        swedish = u"Blå"
+        swedish = u"blå"
 
     elif word == "red":
         swedish = u"röd"
@@ -210,7 +209,6 @@ def swedish_task(word):
         swedish = "gul"
 
     return swedish
-
 
 if __name__ == "__main__":
     experiment = Experiment()
