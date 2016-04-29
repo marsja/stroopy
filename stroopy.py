@@ -15,7 +15,7 @@ class Experiment:
         # type: (object, object) -> object
         self.color = color
         self.win = visual.Window(monitor="testMonitor",
-                                 color=self.color, fullscr=True)
+                                 color=self.color, fullscr=False)
         return self.win
 
     def settings(self):
@@ -53,7 +53,7 @@ class Experiment:
         self.trial_file = trial_file
         self.random = randomization
         self.data_types = ['Response', 'Accuracy', 'RT', 'Sub_id', 'Sex']
-        with open(self.trial_file, 'rb') as stimfile:
+        with open(self.trial_file, 'rtU') as stimfile:
             self._stims = csv.DictReader(stimfile)
             self.trials = data.TrialHandler(list(self._stims), 1,
                                             method="random")
@@ -123,7 +123,7 @@ class Experiment:
                 trial['Response'] = keys[0]
                 trial['Sub_id'] = self.experiment_info['Subid']
                 trial['Sex'] = self.experiment_info['Sex']
-                writeCsv('test.csv', trial)
+                writeCsv(self.experiment_info[u'DataFile'], trial)
 
             event.clearEvents()
 
@@ -146,7 +146,7 @@ def loadFiles(directory, exts, fileType, win='', whichFiles='*', stimList=[]):
         stimFile = os.path.splitext(fullFileName)[0]
 
         if fileType == 'text':
-            with codecs.open(fullPath, 'r', encoding='latin-1') as f:
+            with codecs.open(fullPath, 'rtU', encoding='latin-1') as f:
                 textRef = visual.TextStim(win, text=f.read(), wrapWidth=1.2, alignHoriz='center', color="Black",
                                           alignVert='center', height=0.06)
 
@@ -212,19 +212,19 @@ def swedish_task(word):
     return swedish
 
 
-####
-experiment = Experiment()
-experiment.settings()
-window = experiment.create_window()
-# Practice Trials
-display_instructions()
+if __name__ == "__main__":
+    experiment = Experiment()
+    experiment.settings()
+    window = experiment.create_window()
+    # Practice Trials
+    display_instructions()
 
-practice = experiment.create_trials('practice_list.csv')
-experiment.running_experiment(practice, testtype='practice')
-# Test trials
-display_instructions(start_instruction=False)
-trials = experiment.create_trials('stimuli_list.csv')
-experiment.running_experiment(trials, testtype='test')
+    practice = experiment.create_trials('practice_list.csv')
+    experiment.running_experiment(practice, testtype='practice')
+    # Test trials
+    display_instructions(start_instruction=False)
+    trials = experiment.create_trials('stimuli_list.csv')
+    experiment.running_experiment(trials, testtype='test')
 
-core.wait(.2)
-window.close()
+    core.wait(.2)
+    window.close()
