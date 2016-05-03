@@ -6,7 +6,7 @@ A simple Stroop Task programmed using PsychoPy
 - [] English
     
 ## Stimuli
-- [x] English
+- [x] English (Not tested, yet)
 - [x] Swedish (translated in the script)
 - [] More languages?
 
