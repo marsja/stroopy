@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-import codecs
-import csv
-import glob
-import os
 
-from psychopy import visual, event, core, data, gui
+from psychopy import event, core, data, gui
+
+from fileHandling import *
 
 
 class Experiment:
@@ -42,11 +40,11 @@ class Experiment:
         self.pos = pos
         self.name = name
         self.color = color
-        textStim = visual.TextStim(win=self.win, ori=0, name=self.name,
-                                   text=self.text, font=u'Arial',
-                                   pos=self.pos,
-                                   color=self.color, colorSpace=u'rgb')
-        return textStim
+        text_stimuli = visual.TextStim(win=self.win, ori=0, name=self.name,
+                                       text=self.text, font=u'Arial',
+                                       pos=self.pos,
+                                       color=self.color, colorSpace=u'rgb')
+        return text_stimuli
 
     def create_trials(self, trial_file, randomization='random'):
         '''Doc string'''
@@ -127,44 +125,6 @@ class Experiment:
             event.clearEvents()
 
 
-def loadFiles(directory, exts, fileType, win='', whichFiles='*', stimList=[]):
-    """ Load text intstructions"""
-    path = os.getcwd()
-    if isinstance(exts, list):
-        fileList = []
-        for curExtension in exts:
-            fileList.extend(glob.glob(
-                os.path.join(path, directory, whichFiles + curExtension)))
-    else:
-        fileList = glob.glob(os.path.join(path, directory, whichFiles + exts))
-        fileMatrix = {}
-
-    for num, curFile in enumerate(fileList):
-        fullPath = curFile
-        fullFileName = os.path.basename(fullPath)
-        stimFile = os.path.splitext(fullFileName)[0]
-
-        if fileType == 'text':
-            with codecs.open(fullPath, 'r', encoding='latin-1') as f:
-                textRef = visual.TextStim(win, text=f.read(), wrapWidth=1.2, alignHoriz='center', color="Black",
-                                          alignVert='center', height=0.06)
-
-            fileMatrix[stimFile] = ((textRef))
-
-    return fileMatrix
-
-
-def writeCsv(fileName, thisTrial):
-    fullPath = os.path.abspath(fileName)
-    if not os.path.isfile(fullPath):
-        with codecs.open(fullPath, 'ab+', encoding='utf8') as f:
-            csv.writer(f, delimiter=';').writerow(thisTrial.keys())
-            csv.writer(f, delimiter=';').writerow(thisTrial.values())
-    else:
-        with codecs.open(fullPath, 'ab+', encoding='utf8') as f:
-            csv.writer(f, delimiter=';').writerow(thisTrial.values())
-
-
 def display_instructions(start_instruction=''):
     # Display instructions
     instructions = loadFiles('instructions', '.txt', 'text', window)
@@ -178,10 +138,11 @@ def display_instructions(start_instruction=''):
             examples[i].pos = pos
             if i == 0:
                 examples[0].setText(u'grön')
-            else:
+            elif i == 1:
                 examples[1].setText(u'blå')
-            if i == 2:
+            elif i == 2:
                 examples[2].setColor('Green')
+                examples[2].setText(u'grön')
         [example.draw() for example in examples]
 
         instructions['instructions2_SWE'].pos = (0.0, -0.5)
@@ -191,7 +152,6 @@ def display_instructions(start_instruction=''):
 
     elif start_instruction == 'End':
         instructions['experiment_done_SWE'].draw()
-        core.wait(1)
 
     window.flip()
     event.waitKeys(keyList=['space'])
@@ -213,6 +173,7 @@ def swedish_task(word):
         swedish = "gul"
 
     return swedish
+
 
 if __name__ == "__main__":
     experiment = Experiment()
