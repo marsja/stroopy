@@ -165,10 +165,10 @@ def writeCsv(fileName, thisTrial):
             csv.writer(f, delimiter=';').writerow(thisTrial.values())
 
 
-def display_instructions(start_instruction=True):
+def display_instructions(start_instruction=''):
     # Display instructions
     instructions = loadFiles('instructions', '.txt', 'text', window)
-    if start_instruction == True:
+    if start_instruction == 'Practice':
         instructions['instructions_SWE'].pos = (0.0, 0.5)
         instructions['instructions_SWE'].draw()
 
@@ -186,8 +186,12 @@ def display_instructions(start_instruction=True):
 
         instructions['instructions2_SWE'].pos = (0.0, -0.5)
         instructions['instructions2_SWE'].draw()
-    else:
+    elif start_instruction == 'Test':
         instructions['questions_SWE'].draw()
+
+    elif start_instruction == 'End':
+        instructions['experiment_done_SWE'].draw()
+        core.wait(1)
 
     window.flip()
     event.waitKeys(keyList=['space'])
@@ -213,16 +217,19 @@ def swedish_task(word):
 if __name__ == "__main__":
     experiment = Experiment()
     experiment.settings()
-    window = experiment.create_window()
+    window = experiment.create_window(color=(0, 0, 0))
+    # We don't want the mouse to show:
+    event.Mouse(visible=False)
     # Practice Trials
-    display_instructions()
+    display_instructions(start_instruction='Practice')
 
     practice = experiment.create_trials('practice_list.csv')
     experiment.running_experiment(practice, testtype='practice')
     # Test trials
-    display_instructions(start_instruction=False)
+    display_instructions(start_instruction='Test')
     trials = experiment.create_trials('stimuli_list.csv')
     experiment.running_experiment(trials, testtype='test')
 
-    core.wait(.2)
+    # End experiment but first we display some instructions
+    display_instructions(start_instruction='End')
     window.close()
