@@ -134,15 +134,20 @@ def display_instructions(start_instruction=''):
 
         positions = [[-.2, 0], [.2, 0], [0, 0]]
         examples = [experiment.create_text_stimuli() for pos in positions]
+        example_words = ['green', 'blue', 'green']
+        if settings['Language'] == 'Swedish':
+            example_words = [swedish_task(word) for word in example_words]
+
         for i, pos in enumerate(positions):
             examples[i].pos = pos
             if i == 0:
-                examples[0].setText(u'grön')
+                examples[0].setText(example_words[i])
+                examples[0].setColor('Green')
             elif i == 1:
-                examples[1].setText(u'blå')
+                examples[1].setText(example_words[i])
             elif i == 2:
                 examples[2].setColor('Green')
-                examples[2].setText(u'grön')
+                examples[2].setText(example_words[i])
         [example.draw() for example in examples]
 
         instructions['instructions2_SWE'].pos = (0.0, -0.5)
@@ -177,7 +182,7 @@ def swedish_task(word):
 
 if __name__ == "__main__":
     experiment = Experiment()
-    experiment.settings()
+    settings = experiment.settings()
     window = experiment.create_window(color=(0, 0, 0))
     # We don't want the mouse to show:
     event.Mouse(visible=False)
