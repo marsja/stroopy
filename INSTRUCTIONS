@@ -1,0 +1,98 @@
+Swedish
+
+instructionsSTART
+Din uppgift är att så korrekt och snabbt som möjligt avgöra vilken färg ett ord är skrivet med.
+Du för två alternativ, ett på vardera  sida om det färgade ordet.
+Använd X-tangent för vänster, och M-tangent för höger.
+
+
+
+I exemplet nedan skulle du alltså tryckt på X (vänster), eftersom färgen pä mittenordet är grön.
+
+instructionsEND
+
+practiceSTART
+Tryck på MELLANSLAG för att testa 6 omgångar innan själva testet startar.
+practiceEND
+
+testSTART
+Bra jobbat!
+
+
+Har du några frågor så ställ dem till försöksledaren nu.
+
+
+Försök att arbeta så snabbt och korrekt som möjligt.
+
+
+Tryck MELLANSLAG för att börja det riktiga testet.
+testEND
+
+doneSTART
+Nu är experimentet klart,
+
+
+Var vänlig meddela testledaren
+
+
+Tryck på SPACE för att avsluta programmet.
+doneEND
+
+rightSTART
+Rätt!
+rightEND
+
+incorrectSTART
+Fel! Det är färgen som gäller inte ordet
+incorrectEND
+
+SwedishEnd
+
+English
+instructionsSTART
+Your task is to as accurately and quickly as possible to determine the color of a presented word.
+You get two options, one on each side of the colored word.
+Use the X button if the right option is the left, and the M-key if right option is to the right.
+
+
+
+In the example below, you would then press the X (left), as the word is presented in the color green."
+instructionsEND
+
+practiceSTART
+Press SPACE to test six trials before the start of the actual test.
+practiceEND
+
+testSTART
+Good work!
+
+
+If you have any questions, please ask experimenter leader now.
+
+
+Try to answer as quickly and accurately as possible.
+
+
+Press the SPACE to start the experiment.
+testEND
+
+
+doneSTART
+The experiment is done,
+
+
+Please notify the experimental leader
+
+
+Press space to end the experiment
+doneEND
+
+rightSTART
+Correct!
+rightEND
+
+incorrectSTART
+Incorrect! It is the color not the word
+incorrectEND
+
+EnglishEnd
