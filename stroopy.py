@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from psychopy import event, core, data, gui
+from psychopy import event, core, data, gui, visual
 
 from fileHandling import *
 
@@ -102,11 +102,11 @@ class Experiment:
             self.rt = self.timer.getTime()
             if self.testtype == 'practice':
                 if keys[0] != trial['correctresponse']:
-                    fixation.setText(u'Fel! Det är färgen som gäller inte ordet')
+                    instruction_stimuli['incorrect'].draw()
 
                 else:
-                    fixation.setText(u'Rätt!')
-                fixation.draw()
+                    instruction_stimuli['right'].draw()
+
                 self.win.flip()
                 core.wait(2)
 
@@ -125,12 +125,33 @@ class Experiment:
             event.clearEvents()
 
 
+def create_instructions_dict(instructions):
+    start_and_end = [w for w in instructions.split() if w.endswith('START') or w.endswith('END')]
+    keys = {}
+    for word in start_and_end:
+        key = re.split("[END, START]", word)[0]
+        if key not in keys.keys():
+            keys[key] = []
+
+        if word.startswith(key):
+            keys[key].append(word)
+    return keys
+
+def create_instructions(input, START, END):
+
+    instruction_text = parse_instructions(input, START, END)
+    print instruction_text
+    text_stimuli = visual.TextStim(window, text=instruction_text, wrapWidth=1.2, alignHoriz='center', color="Black",
+                              alignVert='center', height=0.06)
+
+    return text_stimuli
+
 def display_instructions(start_instruction=''):
     # Display instructions
-    instructions = loadFiles('instructions', '.txt', 'text', window)
+
     if start_instruction == 'Practice':
-        instructions['instructions_SWE'].pos = (0.0, 0.5)
-        instructions['instructions_SWE'].draw()
+        instruction_stimuli['instructions'].pos = (0.0, 0.5)
+        instruction_stimuli['instructions'].draw()
 
         positions = [[-.2, 0], [.2, 0], [0, 0]]
         examples = [experiment.create_text_stimuli() for pos in positions]
@@ -150,13 +171,13 @@ def display_instructions(start_instruction=''):
                 examples[2].setText(example_words[i])
         [example.draw() for example in examples]
 
-        instructions['instructions2_SWE'].pos = (0.0, -0.5)
-        instructions['instructions2_SWE'].draw()
+        instruction_stimuli['practice'].pos= (0.0, -0.5)
+        instruction_stimuli['practice'].draw()
     elif start_instruction == 'Test':
-        instructions['questions_SWE'].draw()
+        instruction_stimuli['test'].draw()
 
     elif start_instruction == 'End':
-        instructions['experiment_done_SWE'].draw()
+        instruction_stimuli['done'].draw()
 
     window.flip()
     event.waitKeys(keyList=['space'])
@@ -183,7 +204,15 @@ def swedish_task(word):
 if __name__ == "__main__":
     experiment = Experiment()
     settings = experiment.settings()
+    language = settings['Language']
+    instructions = read_instructions_file("INSTRUCTIONS", language, language + "End")
+    instructions_dict = create_instructions_dict(instructions)
+    instruction_stimuli = {}
+
     window = experiment.create_window(color=(0, 0, 0))
+
+    for instruction, (START, END) in instructions_dict.iteritems():
+        instruction_stimuli[instruction] = create_instructions(instructions, START, END)
     # We don't want the mouse to show:
     event.Mouse(visible=False)
     # Practice Trials

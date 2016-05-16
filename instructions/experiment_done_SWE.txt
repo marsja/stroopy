@@ -1,7 +1,0 @@
-Nu är experimentet klart,
-
-
-Var vänlig meddela testledaren
-
-
-Tryck på space för att avsluta programmet.

@@ -1,37 +1,22 @@
 import codecs
 import csv
-import glob
 import os
+import re
 
-from psychopy import visual
+def parse_instructions(input, START, END):
+        m = re.compile(r'%s(.*)%s' % (START, END), re.DOTALL | re.MULTILINE)
+        text = m.search(input).group(1)
+
+        return text
 
 
-def loadFiles(directory, exts, filetype, win='', whichfiles='*', stimlist=[]):
-    """ Load text intstructions"""
-    path = os.getcwd()
-    if isinstance(exts, list):
-        filelist = []
-        for currextension in exts:
-            filelist.extend(glob.glob(
-                os.path.join(path, directory, whichfiles + currextension)))
-    else:
-        filelist = glob.glob(os.path.join(path, directory, whichfiles + exts))
-        filematrix = {}
+def read_instructions_file(instructionsfile, START, END):
+    with codecs.open(instructionsfile, 'r', encoding='utf-8') as instructions:
+        input_data = instructions.read()
 
-    for num, curfile in enumerate(filelist):
-        fullpath = curfile
-        fullfilaname = os.path.basename(fullpath)
-        stimfile = os.path.splitext(fullfilaname)[0]
+        text = parse_instructions(input_data, START, END)
 
-        if filetype == 'text':
-            with codecs.open(fullpath, 'r', encoding='latin-1') as f:
-                textRef = visual.TextStim(win, text=f.read(), wrapWidth=1.2, alignHoriz='center', color="Black",
-                                          alignVert='center', height=0.06)
-
-            filematrix[stimfile] = ((textRef))
-
-    return filematrix
-
+    return text
 
 def writeCsv(fileName, thisTrial):
     fullPath = os.path.abspath(fileName)
