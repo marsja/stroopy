@@ -18,7 +18,9 @@ The words ending with START and END marks where the scripts (i.e., the functions
 ## Stimuli
 - [x] English
 - [x] Swedish (stimuli translated in the script. Not optimal)
-- [] More languages?
+- More languages? Feel free to add your own languages. Perhaps
+  the function for translating to Swedish need to remove and languages
+  fetched elsewhere.
 
 Feel free to contribute with other languages.
 
