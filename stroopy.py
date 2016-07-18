@@ -24,6 +24,7 @@ class Experiment:
         info_dialog = gui.DlgFromDict(title='Stroop task', dictionary=experiment_info,
                                       fixed=['Experiment Version'])
         experiment_info[u'DataFile'] = u'Data' + os.path.sep + u'stroop.csv'
+
         if info_dialog.OK:
             return experiment_info
         else:
@@ -116,7 +117,7 @@ class Experiment:
                 trial['Response'] = keys[0]
                 trial['Sub_id'] = settings['Subid']
                 trial['Sex'] = settings['Sex']
-                writeCsv(settings[u'DataFile'], trial)
+                write_csv(settings[u'DataFile'], trial)
 
             event.clearEvents()
 
