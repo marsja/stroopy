@@ -1,6 +1,8 @@
 # Stroopy
 A simple Stroop Task programmed using PsychoPy 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/re8i-CZwREI" frameborder="0" allowfullscreen></iframe>
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/re8i-CZwREIE/0.jpg)](https://www.youtube.com/watch?v=re8i-CZwREI)
+
 
 ## Instructions
 - [x] Swedish
