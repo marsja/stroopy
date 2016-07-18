@@ -1,7 +1,7 @@
 # Stroopy
 A simple Stroop Task programmed using PsychoPy 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/re8i-CZwREIE/0.jpg)](https://www.youtube.com/watch?v=re8i-CZwREI)
+[![IMAGE ALT TEXT HERE](https://i.ytimg.com/vi/re8i-CZwREI/0.jpg)](https://www.youtube.com/watch?v=re8i-CZwREI)
 
 
 ## Instructions
