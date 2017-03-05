@@ -30,3 +30,5 @@ Feel free to contribute with other languages.
 As for now to add more languages add a language in the list on line 21 (['Swedish', 'English']). After this is done
 you need to follow how the INSTRUCTIONS file is set-up (as described above). Also, the translation function ned to be
 updated.
+
+---------
