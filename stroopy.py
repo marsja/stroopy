@@ -4,9 +4,10 @@ from fileHandling import *
 
 
 class Experiment:
-    def __init__(self, win_color):
+    def __init__(self, win_color, txt_color):
         self.stimuli_positions = [[-.2, 0], [.2, 0], [0, 0]]
         self.win_color = win_color
+        self.txt_color = txt_color
 
     def create_window(self, color=(1, 1, 1)):
         # type: (object, object) -> object
@@ -18,7 +19,7 @@ class Experiment:
     def settings(self):
         experiment_info = {'Subid': '', 'Age': '', 'Experiment Version': 0.1,
                            'Sex': ['Male', 'Female', 'Other'],
-                           'Language': ['Swedish', 'English'], u'date':
+                           'Language': ['English', 'Swedish'], u'date':
                                data.getDateStr(format="%Y-%m-%d_%H:%M")}
 
         info_dialog = gui.DlgFromDict(title='Stroop task', dictionary=experiment_info,
@@ -31,10 +32,11 @@ class Experiment:
             core.quit()
             return 'Cancelled'
 
-    def create_text_stimuli(self, text=None, pos=[0.0, 0.0], name='', color='Black'):
+    def create_text_stimuli(self, text=None, pos=[0.0, 0.0], name='', color=None):
         '''Creates a text stimulus,
         '''
-
+        if color is None:
+            color = self.txt_color
         text_stimuli = visual.TextStim(win=window, ori=0, name=name,
                                        text=text, font=u'Arial',
                                        pos=pos,
@@ -48,7 +50,6 @@ class Experiment:
             _stims = csv.DictReader(stimfile)
             trials = data.TrialHandler(list(_stims), 1,
                                        method="random")
-
         [trials.data.addDataType(data_type) for data_type in data_types]
 
         return trials
@@ -74,7 +75,7 @@ class Experiment:
 
         for trial in _trials:
             # Fixation cross
-            fixation = self.present_stimuli('Black', '+', self.stimuli_positions[2],
+            fixation = self.present_stimuli(self.txt_color, '+', self.stimuli_positions[2],
                                             stimuli[3])
             fixation.draw()
             window.flip()
@@ -86,16 +87,16 @@ class Experiment:
                                           self.stimuli_positions[2], stimuli[0])
             target.draw()
             # alt1
-            alt1 = self.present_stimuli('Black', trial['alt1'],
+            alt1 = self.present_stimuli(self.txt_color, trial['alt1'],
                                         self.stimuli_positions[0], stimuli[1])
             alt1.draw()
             # alt2
-            alt2 = self.present_stimuli('Black', trial['alt2'],
+            alt2 = self.present_stimuli(self.txt_color, trial['alt2'],
                                         self.stimuli_positions[1], stimuli[2])
             alt2.draw()
             window.flip()
 
-            keys = event.waitKeys(keyList=['x', 'm'])
+            keys = event.waitKeys(keyList=['x', 'm', 'q'])
             resp_time = timer.getTime()
             if testtype == 'practice':
                 if keys[0] != trial['correctresponse']:
@@ -120,6 +121,10 @@ class Experiment:
                 write_csv(settings[u'DataFile'], trial)
 
             event.clearEvents()
+            print(f"keys: {keys}")
+            if 'q' in keys:
+                print(f"breaking because keys: {keys}")
+                break
 
 
 def create_instructions_dict(instr):
@@ -137,11 +142,11 @@ def create_instructions_dict(instr):
     return keys
 
 
-def create_instructions(input, START, END):
+def create_instructions(input, START, END, color="Black"):
     instruction_text = parse_instructions(input, START, END)
-    print instruction_text
+    print(instruction_text)
     text_stimuli = visual.TextStim(window, text=instruction_text, wrapWidth=1.2,
-                                   alignHoriz='center', color="Black",
+                                   alignHoriz='center', color=color,
                                    alignVert='center', height=0.06)
 
     return text_stimuli
@@ -162,13 +167,10 @@ def display_instructions(start_instruction=''):
 
         for i, pos in enumerate(positions):
             examples[i].pos = pos
-
             if i == 0:
                 examples[0].setText(example_words[i])
-
             elif i == 1:
                 examples[1].setText(example_words[i])
-
             elif i == 2:
                 examples[2].setColor('Green')
                 examples[2].setText(example_words[i])
@@ -193,31 +195,33 @@ def swedish_task(word):
     swedish = '+'
     if word == "blue":
         swedish = u"blå"
-
     elif word == "red":
         swedish = u"röd"
-
     elif word == "green":
         swedish = u"grön"
-
     elif word == "yellow":
         swedish = "gul"
-
     return swedish
 
 
 if __name__ == "__main__":
-    experiment = Experiment(win_color="White")
+    background = "Black"
+    back_color = (0, 0, 0)
+    textColor = "White"
+    # text_color = (1, 1, 1)
+    experiment = Experiment(win_color=background , txt_color=textColor)
     settings = experiment.settings()
     language = settings['Language']
     instructions = read_instructions_file("INSTRUCTIONS", language, language + "End")
     instructions_dict = create_instructions_dict(instructions)
     instruction_stimuli = {}
 
-    window = experiment.create_window(color=(0, 0, 0))
+    window = experiment.create_window(color=back_color)
 
-    for instruction, (START, END) in instructions_dict.iteritems():
-        instruction_stimuli[instruction] = create_instructions(instructions, START, END)
+    for inst in instructions_dict.keys():
+        instruction, START, END = inst, instructions_dict[inst][0], instructions_dict[inst][1]
+        instruction_stimuli[instruction] = create_instructions(instructions, START, END, color=textColor)
+
     # We don't want the mouse to show:
     event.Mouse(visible=False)
     # Practice Trials
